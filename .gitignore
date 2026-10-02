@@ -5,7 +5,6 @@ build/
 target/
 out/
 .idea
-.vscode
 *.iml
 *.ipr
 *.iws
@@ -19,3 +18,5 @@ plugin-debezium-postgres/src/test/resources/ssl/
 
 .factorypath
 bin/
+config.bat
+node_modules

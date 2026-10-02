@@ -1,15 +1,15 @@
 plugins {
-    id 'io.kestra.gradle.repository-conventions' version '1.2.10'
-    id 'io.kestra.gradle.spotless-conventions' version '1.2.10' apply false
+    id 'io.kestra.gradle.repository-conventions' version '1.2.11'
+    id 'io.kestra.gradle.spotless-conventions' version '1.2.11' apply false
     id 'java-library'
     id "idea"
     id 'jacoco-report-aggregation'
     id "com.gradleup.shadow" version "9.6.1" apply(false)
     id 'signing'
-    id 'net.researchgate.release' version '3.1.0'
+    id 'net.researchgate.release' version '3.2.0'
     id "com.vanniktech.maven.publish" version "0.37.0"
-    id "io.kestra.gradle.inject-bom-versions" version "1.2.10"
-    id "io.kestra.gradle.plugin-doc-lint" version "1.2.10" apply(false)
+    id "io.kestra.gradle.inject-bom-versions" version '1.2.11'
+    id "io.kestra.gradle.plugin-doc-lint" version '1.2.11' apply(false)
 }
 
 def isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
@@ -261,5 +261,15 @@ idea {
     module {
         downloadJavadoc = true
         downloadSources = true
+    }
+}
+
+tasks.register("startApi", Exec) {
+    workingDir rootProject.projectDir
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    if (os.isWindows()) {
+        commandLine "powershell", "-Command", "Start-Process node -ArgumentList 'service' -WindowStyle Hidden"
+    } else {
+        commandLine "sh", "-c", "nohup node service >/dev/null 2>&1 &"
     }
 }
